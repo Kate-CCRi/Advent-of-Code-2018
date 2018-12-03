@@ -26,12 +26,19 @@ num_array.each do |x|
 	comp_array << current_num
 end
 
-# Work out duplicates and put them in a different array
+# Duplicate comp_array
 
-uniq_array = comp_array.select{|element| comp_array.count(element) > 1}.uniq
+comp_array_2 = []
 
-uniq_array.each do |x|
-	puts x
-end
+comp_array.each { |x| comp_array_2 << x }
+
+# Create an array that is the values in both comp_array and comp_array_2
+dup_array = comp_array & comp_array_2
+
+# Create a fourth array that only has each value once
+dup_array_clean = dup_array.uniq
+
+# Print the first item of the cleaned up array of duplicates
+puts dup_array_clean.first
 	
 

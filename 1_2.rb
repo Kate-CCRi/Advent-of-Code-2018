@@ -26,7 +26,11 @@ num_array.each {|x|
 	current_num = current_num + x
 	comp_array << current_num}
 
-# Find the first duplicate
+# Find all the duplicates in the array and put one copy of them into a new array
 
-h = Hash.new(0)
-comp_array.find { |each| (h[each] += 1) == 2}
+comp_uniq = []
+comp_uniq << comp_array.find_all { |x| arr.count(x) > 1}.uniq
+
+# Print the first value in the new array
+
+puts comp_uniq.first

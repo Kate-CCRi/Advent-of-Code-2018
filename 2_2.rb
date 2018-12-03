@@ -4,8 +4,7 @@
 
 input = [] # An array to hold our lines that we're about to read in
 sorted = []
-lcount = 0
-ldouble = 0
+len = 0
 
 # Get the input file
 
@@ -37,19 +36,8 @@ end
 # Sort the overall list of things - this produces an array of arrays
 sorted.sort
 
-# This compares each successive pair of items - not quite what was wanted.
-sorted.each_cons(2) do |one, two|
-
-	unique = [one, two].flatten.uniq
-	
-	if unique.length == lcount
-		puts "#{one} and #{two} are the same."
-	elsif unique.length == ldouble
-		puts "#{one} and #{two} are completely different"
-	end
-
-end
-
+# How long is the sorted array?
+len = sorted.length
 
 =begin
 Some pseudocode
@@ -62,6 +50,27 @@ for each array currently in sorted
 end
 =end
 
+sorted.each do |x|
+
+i = 0
+xlen = x.length
+dlen = xlen - 1
+
+
+	while i <= len
+		comp_arr = sorted.at(i)
+		inter_arr = []
+	
+		inter_arr = x - comp_arr
+		
+		if inter_arr.length == dlen
+			result_arr = x && comp_arr
+			puts result_arr
+		else
+			i += 1
+		end
+	end
+end
 
 
 

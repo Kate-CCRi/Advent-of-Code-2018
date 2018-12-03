@@ -19,6 +19,10 @@ while line = f.gets do
 	num_array << input_num # Push that number to the array
 end	
 
+=begin
+While the duplicate array has no entries, calculate the current value and put it into the array for comparsion. Then put anything that shows up in the comparison array more than once into the duplicate array.
+=end
+
 while dup_array.length == 0
 
 	num_array.each do |x|

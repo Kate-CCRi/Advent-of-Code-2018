@@ -5,8 +5,7 @@
 input_array = [] # An array to hold our numbers that we're about to read in
 two_same = 0 # How many entries have the same letter twice?
 three_same = 0 # How many entries have the same letter three times?
-doubles = 0 # Are there doubles in this line? 0 = F, 1 = T
-triples = 0 # Are there triples in this line? 
+
 
 # Get the input file
 
@@ -16,35 +15,41 @@ f = File.open("day_2_test.txt")
 
 while line = f.gets do
 	input_array << line
-end
-
-puts input_array	
+end	
 
 input_array.each do |x|
 	
-	x.delete!("\n")
+	doubles = 0 # Are there doubles in this line? 0 = F, 1 = T
+	triples = 0 # Are there triples in this line? 
+	
+	x.delete!("\n") # Remove the newline character from the string
 
-	letters = x.chars
-	l_uniq = letters.uniq
-	puts "The original array is #{letters}."
-	puts "The uniqued array is #{l_uniq}."
+	letters = x.chars # Create a new array out of the characters remaining in the string
+	l_uniq = letters.uniq # Create a second array with the unique character list
+	
+# For each letter in the unique data source:	
 	
 	l_uniq.each do |y|
-		puts y
-		if (doubles == 0 and letters.count(y) == 2)
+
+# If this line has already been counted towards the 2-letter count, end the check
+		if doubles == 1 
+			break
+# Otherwise, set the variable that says you've already counted this one and increment the counter
+		elsif letters.count(y) == 2
 			doubles = 1
 			two_same += 1
-			puts "There are now #{two_same} things with 2 letters the same."
 		end
-		if (triples == 0 and letters.count(y) == 3)
+# Same as above only for the 3-letter count
+		if triples == 1
+			break
+		elsif (triples == 0 and letters.count(y) == 3)
 			triples = 1
 			three_same += 1
-			puts "There are now #{three_same} items with 3 letters the same."
 		end	
 	end	
-
 end
 
+# The checksum is the product of the number of lines with 2 letters the same and the number of lines with 3 letters the same
 checksum = two_same * three_same
 
 puts "There are #{two_same} entries with 2 letters the same."

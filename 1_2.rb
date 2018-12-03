@@ -28,4 +28,5 @@ num_array.each {|x|
 
 # Find the first duplicate
 
+h = Hash.new(0)
 comp_array.find { |each| (h[each] += 1) == 2}

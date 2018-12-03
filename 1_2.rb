@@ -26,5 +26,12 @@ num_array.each do |x|
 	comp_array << current_num
 end
 
-puts comp_array
+# Work out duplicates and put them in a different array
+
+uniq_array = comp_array.select{|element| comp_array.count(element) > 1}.uniq
+
+uniq_array.each do |x|
+	puts x
+end
+	
 

@@ -28,8 +28,8 @@ num_array.each {|x|
 
 # Find all the duplicates in the array and put one copy of them into a new array
 
-comp_uniq = []
-comp_uniq << comp_array.find_all { |x| comp_array.count(x) > 1}.uniq
+comp_uniq = comp_array.find_all { |x| comp_array.count(x) > 1}.uniq
+
 
 # Print the first value in the new array
 

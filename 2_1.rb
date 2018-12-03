@@ -9,7 +9,7 @@ three_same = 0 # How many entries have the same letter three times?
 
 # Get the input file
 
-f = File.open("day_2_test.txt")
+f = File.open("day_2_input.txt")
 
 # Read each line of the file and put its value into the array
 

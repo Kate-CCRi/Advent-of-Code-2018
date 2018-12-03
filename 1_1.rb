@@ -22,7 +22,6 @@ end
 
 num_array.each {|x| current_num = current_num + x}
 
-# Output final value
+# Output final value - Day 1, Problem 1 solution
 
 puts current_num
-	

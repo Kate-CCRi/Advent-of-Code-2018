@@ -32,13 +32,9 @@ comp_array_2 = []
 
 comp_array.each { |x| comp_array_2 << x }
 
-# Create an array that is the values in both comp_array and comp_array_2
+# Create an array that is the values in both comp_array and comp_array_2 (intersection)
 dup_array = comp_array & comp_array_2
 
-# Create a fourth array that only has each value once
-dup_array_clean = dup_array.uniq
+# Print the first item from the intersection
 
-# Print the first item of the cleaned up array of duplicates
-puts dup_array_clean.first
-	
-
+puts dup_array.first

@@ -19,6 +19,6 @@ while (true) do  # iterate over the input sequence forever
             puts "You are looking for #{current}"
             exit
         end
-        seen[current] = true # adds a value in the hash for the using current as the key
+        seen[current] = seen # adds a value in the hash for the using current as the key
     end
 end

@@ -20,7 +20,7 @@ while line = f.gets do
 end	
 
 =begin
-While the duplicate array has no entries, calculate the current value and put it into the array for comparsion. Then put anything that shows up in the comparison array more than once into the duplicate array.
+While the duplicate array has no entries, calculate the current value and put it into the array for comparison. Then put anything that shows up in the comparison array more than once into the duplicate array.
 =end
 
 while dup_array.length == 0

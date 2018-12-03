@@ -9,7 +9,7 @@ dup_array = []
 
 # Get the input file
 
-f = File.open("day_1_input.txt")
+f = File.open("day_1_test.txt")
 
 # Read each line of the file and put its value into the array
 

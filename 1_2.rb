@@ -5,6 +5,7 @@
 current_num = 0 # A variable to hold our current number
 num_array = [] # An array to hold our input numbers
 comp_array = [] # An array to hold the calculated numbers for comparison
+dup_array = []
 
 # Get the input file
 
@@ -16,21 +17,7 @@ while line = f.gets do
 
 	input_num = line.to_i # Convert the read in strings into integers
 	num_array << input_num # Push that number to the array
-	
-end
-
-# Calculate the value of the number after each operation specified in the array
-
-num_array.each do |x| 
-	current_num = current_num + x
-	comp_array << current_num
-end
-
-# Print the duplicates
-
-dup_array = comp_array.select{ |x| comp_array.count(x) > 1}
-
-# AH! There *aren't* any duplicates in the *first* runthrough of the list! Let's continue running the list until it does find one!
+end	
 
 while dup_array.length == 0
 

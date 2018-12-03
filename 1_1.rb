@@ -20,11 +20,7 @@ end
 
 # Calculate the value of the number after each operation specified in the array
 
-num_array.each |x|
-
-	current_num = current_num + x
-
-end
+num_array.each {|x| current_num = current_num + x}
 
 # Output final value
 

@@ -5,7 +5,7 @@
 current_num = 0 # A variable to hold our current number
 num_array = [] # An array to hold our input numbers
 comp_array = [] # An array to hold the calculated numbers for comparison
-dup_array = []
+dup_hash = {} # An empty hash for duplicate checking
 
 # Get the input file
 
@@ -19,18 +19,10 @@ while line = f.gets do
 	num_array << input_num # Push that number to the array
 end	
 
-=begin
-While the duplicate array has no entries, calculate the current value and put it into the array for comparison. Then put anything that shows up in the comparison array more than once into the duplicate array.
-=end
-
-while dup_array.length == 0
-
+until $!
 	num_array.each do |x|
 		current_num = current_num + x
-		comp_array << current_num
+		dup_hash[current_num] = current_num
 	end
-	
-	dup_array = comp_array.select{ |x| comp_array.count(x) > 1}
 end
 
-puts dup_array.first

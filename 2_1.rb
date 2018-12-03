@@ -5,6 +5,8 @@
 input_array = [] # An array to hold our numbers that we're about to read in
 two_same = 0 # How many entries have the same letter twice?
 three_same = 0 # How many entries have the same letter three times?
+doubles = 0 # Are there doubles in this line? 0 = F, 1 = T
+triples = 0 # Are there triples in this line? 
 
 # Get the input file
 
@@ -29,20 +31,18 @@ input_array.each do |x|
 	
 	l_uniq.each do |y|
 		puts y
-		if letters.count(y) == 2
+		if (doubles == 0 and letters.count(y) == 2)
 			doubles = 1
-		elsif letters.count(y) == 3
-			triples = 1
-		else
-		end		
-		if doubles == 1
 			two_same += 1
 			puts "There are now #{two_same} things with 2 letters the same."
-		elsif triples == 1
+		end
+		if (triples == 0 and letters.count(y) == 3)
+			triples = 1
 			three_same += 1
 			puts "There are now #{three_same} items with 3 letters the same."
-		end
-	end
+		end	
+	end	
+
 end
 
 checksum = two_same * three_same

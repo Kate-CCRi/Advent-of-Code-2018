@@ -3,7 +3,7 @@
 # Some things we need to start
 
 current_num = 0 # A variable to hold our current number
-num_array = [] # An array to hold our numbers that we're about to read in
+num_array = [] # An array to hold our input numbers
 comp_array = [] # An array to hold the calculated numbers for comparison
 
 # Get the input file
@@ -26,15 +26,20 @@ num_array.each do |x|
 	comp_array << current_num
 end
 
-# Duplicate comp_array
+# Print the duplicates
 
-comp_array_2 = []
+dup_array = comp_array.select{ |x| comp_array.count(x) > 1}
 
-comp_array.each { |x| comp_array_2 << x }
+# AH! There *aren't* any duplicates in the *first* runthrough of the list! Let's continue running the list until it does find one!
 
-# Create an array that is the values in both comp_array and comp_array_2 (intersection)
-dup_array = comp_array & comp_array_2
+while dup_array.length == 0
 
-# Print the first item from the intersection
+	num_array.each do |x|
+		current_num = current_num + x
+		comp_array << current_num
+	end
+	
+	dup_array = comp_array.select{ |x| comp_array.count(x) > 1}
+end
 
 puts dup_array.first

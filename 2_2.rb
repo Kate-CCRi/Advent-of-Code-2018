@@ -2,7 +2,7 @@
 
 # Some things we need to start
 
-input = [] # An array to hold our numbers that we're about to read in
+input = [] # An array to hold our lines that we're about to read in
 sorted = []
 
 # Get the input file
@@ -15,18 +15,19 @@ while line = f.gets do
 	input << line
 end	
 
-# Sort the array into a new array
-sorted_bystring = input.sort
-
-sorted_bystring.each do |x|
+input.each do |x|
 	
 	letters = []
-	sorted_byletter = []
 	
 	x.delete!("\n") # Remove the newline character from the string
+	
 	letters = x.chars.sort # Create a new array out of the characters remaining in the string and sort them
-	sorted_byletter << letters
-	sorted << sorted_byletter.sort
+	sorted << letters
+		
 end
  
+sorted.sort
+
 puts sorted
+
+

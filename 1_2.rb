@@ -21,16 +21,10 @@ end
 
 # Calculate the value of the number after each operation specified in the array
 
-num_array.each {|x| 
-
+num_array.each do |x| 
 	current_num = current_num + x
-	comp_array << current_num}
+	comp_array << current_num
+end
 
-# Find all the duplicates in the array and put one copy of them into a new array
+puts comp_array
 
-comp_uniq = comp_array.find_all { |x| comp_array.count(x) > 1}.uniq
-
-
-# Print the first value in the new array
-
-puts comp_uniq.first

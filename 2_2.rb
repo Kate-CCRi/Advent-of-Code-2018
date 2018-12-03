@@ -20,9 +20,13 @@ sorted_bystring = input.sort
 
 sorted_bystring.each do |x|
 	
+	letters = []
+	sorted_byletter = []
+	
 	x.delete!("\n") # Remove the newline character from the string
-	letters = x.chars.sort # Create a new array out of the characters remaining in the string
+	letters = x.chars.sort # Create a new array out of the characters remaining in the string and sort them
 	sorted_byletter << letters
 	sorted << sorted_byletter.sort
 end
-
+ 
+puts sorted

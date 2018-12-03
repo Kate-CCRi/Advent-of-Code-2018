@@ -26,27 +26,29 @@ input_array.each do |x|
 
 	letters = x.chars # Create a new array out of the characters remaining in the string
 	l_uniq = letters.uniq # Create a second array with the unique character list
-	
-# For each letter in the unique data source:	
-	
-	l_uniq.each do |y|
 
-# If this line has already been counted towards the 2-letter count, end the check
-		if doubles == 1 
-			break
-# Otherwise, set the variable that says you've already counted this one and increment the counter
-		elsif letters.count(y) == 2
-			doubles = 1
-			two_same += 1
-		end
-# Same as above only for the 3-letter count
-		if triples == 1
-			break
-		elsif (triples == 0 and letters.count(y) == 3)
-			triples = 1
-			three_same += 1
+# If this line has not yet been counted against either doubles or triples
+
+	if (doubles == 0 or triples == 0)	
+
+# For each item in the uniqued array
+
+		l_uniq.each do |y|
+
+# If that item appears in the original thing twice and this hasn't already been counted
+			if (letters.count(y) == 2 && doubles == 0)
+			# Flip the "has been counted" bit
+				doubles = 1
+			# Add this one to the count
+				two_same += 1
+			end
+# Same as above only for triples instead of doubles
+			if (letters.count(y) == 3 && triples == 0)
+				triples = 1
+				three_same += 1
+			end	
 		end	
-	end	
+	end
 end
 
 # The checksum is the product of the number of lines with 2 letters the same and the number of lines with 3 letters the same

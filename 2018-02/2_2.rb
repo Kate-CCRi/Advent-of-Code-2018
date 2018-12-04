@@ -16,10 +16,11 @@ while line = f.gets do
 	input << line
 end	
 
-# Sort each item in the input list by letter
+# Remove the newline character from each line and push it to the words array as a string
 input.each do |x|
-	
-	words << x.delete!("\n") # Remove the newline character and push it to the words array
+
+# Chomp automatically removes newlines but doesn't do anything else without an argument	
+	words << x.chomp.to_s 
 			
 end
 
@@ -36,35 +37,34 @@ for each array currently in sorted
 end
 =end
 
-words.each do |word| # Pull out each word array
-
 i = 0 # Let's have fun with iterators!
 
-	while i < len # While our iterator is smaller than the length of the array
+for i in 0..len # While our iterator is smaller than the length of the array
 
-		words.each do |word|
-		
-			same = 0
-			different = 0
-			index = word.length
+	words.each do |word| # For each word in the "words" array
 	
-			word_two = words[i] # Pull another word out of the array
+		word.to_s
+		word_two = words[i].to_s # Pull another word out of the array
 		
-			for j in 0..index
-				if word[index] == word_two[index]
-					same += 1
-				elsif word[index] == word_two[index]
-					different +=1
-				end
-			end
-		
-			if different == 1
-				puts word
-				puts word_two
-				break
-			end
+		same = 0 # Set "same" to 0
+		different = 0 # Set "different" to 0
+		index = word.length # Set the index variable to the length of the word
 			
-			i += 1 # Increment the iterator
+		for j in 0..index # For each item between 0 and the value of index
+		
+			if word[j] == word_two[j]
+				same += 1
+			elsif word[j] != word_two[j]
+				different +=1
+			end
 		end
+		
+		if different == 1
+			puts word
+			puts word_two
+			break
+		end
+			
+		i += 1 # Increment the iterator
 	end
 end

@@ -60,8 +60,20 @@ for i in 0..len # While our iterator is smaller than the length of the array
 		end
 		
 		if different == 1
-			puts word
-			puts word_two
+			
+			same_let = []
+			
+			for j in 0..index # For each item between 0 and the value of index
+		
+				if word[j] == word_two[j]
+					let = word[j]
+					same_let << let
+				end
+				
+			end
+			
+			puts same_let
+			
 			break
 		end
 			

@@ -26,15 +26,21 @@ This line splits the claim into two pieces twice. The command is evaluated left 
 
 	coord, dim = claim.split("@").last.split(":")
 
-	# Pull whitespaces out
-	coord = coord.delete(' ')
-	dim = dim.delete(' ')
+	# Pull whitespaces and newlines out
+	coord = coord.delete(' ').chomp
+	dim = dim.delete(' ').chomp
 	
 	# Split the coordinates on "," and assign the values to x and y
 	x, y = coord.split(",")
 	
 	# Split the dimensions on "x" and assign the values to w and h
 	w, h = dim.split("x")
+	
+	# Explicitly cast everything to integers
+	x = Integer(x)
+	y = Integer(y)
+	w = Integer(w)
+	h = Integer(h)
 	
 =begin
 This block says:

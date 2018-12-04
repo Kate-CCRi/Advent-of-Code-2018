@@ -19,15 +19,11 @@ end
 # Sort each item in the input list by letter
 input.each do |x|
 	
-	letters = []
-	
-	x.delete!("\n") # Remove the newline character from the string
-
-	words << letters
-		
+	words << x.delete!("\n") # Remove the newline character and push it to the words array
+			
 end
 
-len = words.length
+len = words.length # Set the "len" variable to the length of the words array
 
 =begin
 Some pseudocode
@@ -46,7 +42,7 @@ i = 0 # Let's have fun with iterators!
 
 	while i < len # While our iterator is smaller than the length of the array
 
-		word.each_with_index do |word, index|
+		words.each do |word|
 		
 			same = 0
 			different = 0

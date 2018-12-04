@@ -3,8 +3,8 @@
 # Some things we need to start
 
 input = [] # An array to hold our lines that we're about to read in
-sorted = []
-len = 0
+words = [] # An array to hold the cleaned up input
+len = 0 # A variable for the length of the input array
 
 # Get the input file
 
@@ -22,22 +22,12 @@ input.each do |x|
 	letters = []
 	
 	x.delete!("\n") # Remove the newline character from the string
-	
-	letters = x.chars.sort # Create a new array out of the characters remaining in the string and sort them
-	sorted << letters
-	
-	lcount = letters.count
-	ldouble = lcount * 2
+
+	words << letters
 		
 end
 
-
- 
-# Sort the overall list of things - this produces an array of arrays
-sorted.sort
-
-# How long is the sorted array?
-len = sorted.length
+len = words.length
 
 =begin
 Some pseudocode
@@ -50,27 +40,32 @@ for each array currently in sorted
 end
 =end
 
-sorted.each do |x|
+words.each do |word| # Pull out each word array
 
-i = 0
-xlen = x.length
-dlen = xlen - 1
+i = 0 # Let's have fun with iterators!
 
+	while i < len # While our iterator is smaller than the length of the array
 
-	while i <= len
-		comp_arr = sorted.at(i)
-		inter_arr = []
-	
-		inter_arr = x - comp_arr
+		word.each_with_index do |word, index|
 		
-		if inter_arr.length == dlen
-			result_arr = x && comp_arr
-			puts result_arr
-		else
-			i += 1
+			same = 0
+			different = 0
+	
+			word_two = words[i] # Pull another word out of the array
+		
+			if word[index] == word_two[index]
+				same += 1
+			elsif word[index] == word_two[index]
+				different +=1
+			end
+		
+			if different == 1
+				puts word
+				puts word_two
+				break
+			end
+			
+			i += 1 # Increment the iterator
 		end
 	end
 end
-
-
-

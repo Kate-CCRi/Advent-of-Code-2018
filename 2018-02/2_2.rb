@@ -46,13 +46,16 @@ i = 0 # Let's have fun with iterators!
 		
 			same = 0
 			different = 0
+			index = word.length
 	
 			word_two = words[i] # Pull another word out of the array
 		
-			if word[index] == word_two[index]
-				same += 1
-			elsif word[index] == word_two[index]
-				different +=1
+			for j in 0..index
+				if word[index] == word_two[index]
+					same += 1
+				elsif word[index] == word_two[index]
+					different +=1
+				end
 			end
 		
 			if different == 1

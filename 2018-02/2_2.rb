@@ -8,7 +8,7 @@ len = 0 # A variable for the length of the input array
 
 # Get the input file
 
-f = File.open("day_2_test_2.txt")
+f = File.open("day_2_input.txt")
 
 # Read each line of the file and put its value into the array
 
@@ -52,16 +52,19 @@ for i in 0..len # While our iterator is smaller than the length of the array
 			
 		for j in 0..index # For each item between 0 and the value of index
 		
+		# If the letter at position 'j' is the same in both words, increment the "same" counter
 			if word[j] == word_two[j]
 				same += 1
+		# If it's different, the different counter		
 			elsif word[j] != word_two[j]
 				different +=1
 			end
 		end
 		
+		# If the different counter is '1' (our desired condition)
 		if different == 1
 			
-			same_let = []
+			same_let = [] # An array to hold our matching letters
 			
 			for j in 0..index # For each item between 0 and the value of index
 		
@@ -72,7 +75,8 @@ for i in 0..len # While our iterator is smaller than the length of the array
 				
 			end
 			
-			puts same_let
+			# Output the array of matching letters as a string
+			puts same_let.join
 			
 			break
 		end

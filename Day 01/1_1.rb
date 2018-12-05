@@ -27,12 +27,17 @@ num_array.each {|x| current_num = current_num + x}
 puts current_num
 
 =begin
+From code review:
 
-GP suggests this is significantly more elegant, and he's not wrong:
+Is there a .sum function that could do this without the iterator?
+
+GP had suggested 
 
 while line = f.gets do
 	current_num += line.to_i
 end
 
-However. You need the array created by my version for Day 2...
+which would also work.
+
+I thought I needed the num_array for the second part, but I don't, since I solved that problem in a different way.
 =end

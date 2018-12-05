@@ -31,16 +31,11 @@ This line splits the claim into two pieces twice. The command is evaluated left 
 	dim = dim.delete(' ').chomp
 	
 	# Split the coordinates on "," and assign the values to x and y
-	x, y = coord.split(",")
+	x, y = coord.split(",").map(&:to_i)
 	
 	# Split the dimensions on "x" and assign the values to w and h
-	w, h = dim.split("x")
-	
 	# Explicitly cast everything to integers
-	x = Integer(x)
-	y = Integer(y)
-	w = Integer(w)
-	h = Integer(h)
+	w, h = dim.split("x").map(&:to_i)
 	
 =begin
 This block says:

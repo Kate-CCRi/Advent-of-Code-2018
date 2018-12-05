@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 
+require 'set'
+
 # Some things we need to start
 
 # An array to hold our lines that we're about to read in
@@ -11,76 +13,48 @@ f = File.open("day_3_input.txt")
 # Read each line of the file and put its value into the array
 while line = f.gets do
 	input << line
-end	
+end
+=begin
+This creates a new nested array -- 1000 rows containing new arrays, each of which contains 1000 new sets, which will be used to hold the IDs we've seen as we go through the grid.
 
-# Instantiate a new 2D array of 1000 arrays with 1000 '0's in each
-grid = Array.new(1000) {Array.new(1000,0)}
+So our array now looks like this - using {} for a set rather than for a hash:
+[
+	[{},{},{},...{}]
+	[{},{},{},...{}]
+	...
+]
 
-# A hash to hold our potential IDs
-candidates = {}
+=end
+
+grid = Array.new(1000) {Array.new(1000) {Set.new} }
 
 # For each item in the input (a "claim")
 input.each do |claim|
 
 =begin
-Create an ID by splitting the claim on the "@" and taking the first piece.
-Create coordinates and dimensions by splitting the last part of the claim split and splitting it again on ":"
+This line splits the claim into two pieces twice. The command is evaluated left to right, so it gets the claim and splits it on the @, which splits the original line into the claim ID on one side, and the starting coordinate and the dimensions on the other. Then it says "take the last part of that split" (so just the coordinate and dimensions) and split *that* on ":", and assign the two values returned to the two variables.
 =end
-	id_num, claim = claim.split("@")
-	coord, dim = claim.split(":")
-
-	# Pull out extraneous characters, whitespaces, and newlines
-	id = id_num.delete(' ').delete('#').chomp
-	coord = coord.delete(' ').chomp
-	dim = dim.delete(' ').chomp
 	
-	# Split the coordinates on "," and assign the values to x and y
+	id = claim.split("@").first.chomp.delete("#")
+	
+	coord, dim = claim.delete(' ').chomp.split("@").last.split(":").map(&:to_i)
+	
+	# Split the coordinates on "," and assign the values to x and y. Since "map" iterates over an array and produces a new array, this casts 'x' and 'y' to integers as part of the splitting process.
 	x, y = coord.split(",")
 	
 	# Split the dimensions on "x" and assign the values to w and h
 	w, h = dim.split("x")
 	
-	# Explicitly cast everything to integers
-	x = Integer(x)
-	y = Integer(y)
-	w = Integer(w)
-	h = Integer(h)
-	id = Integer(id)
-	
-	# Reset the coordinates into an array form, and push it into the candidates hash with the id as its hash ID
-	coord_array = [x, y]
-	candidates[id] = coord_array
-
-	cell = 0
-	
 =begin
 This block says:
 	As many times as you have entries in w
 		As many times as you have entries in h
-			Add 1 to the grid locations described by those coordinates
-			
+			Push the ID that made you go to that coordinate into the set inside the grid array
 =end	
 	
 	w.times do |x1|
     	h.times do |y1|
-     		grid[x + x1][y + y1] += 1
-     		cell = grid[x + x1][y + y1]
-     		if cell > 1
-    			candidates.delete_if {|key, value| key == id}
-     		end
-    	end
+     		grid[x + x1][y + y1] << id
+     	end
     end
 end
-
-=begin
-
-TO TRY: Keep a record of every cell you've seen and how many times you've seen it, then remove every cell with a value > 2 from the hash and return the resulting matching ID
-
-=end
-
-
-# Take the grid array, flatten it, pick all cells where the number in them is greater than 1, and return that count.
-part_one = grid.flatten.select { |cell| cell > 1 }.count
-puts "The answer to Part One is #{part_one}."
-
-puts candidates.count

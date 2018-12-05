@@ -19,8 +19,6 @@ grid = Array.new(1000) {Array.new(1000,0)}
 # A hash to hold our potential IDs
 candidates = {}
 
-seen = {}
-
 # For each item in the input (a "claim")
 input.each do |claim|
 
@@ -49,8 +47,11 @@ Create coordinates and dimensions by splitting the last part of the claim split 
 	h = Integer(h)
 	id = Integer(id)
 	
+	# Reset the coordinates into an array form, and push it into the candidates hash with the id as its hash ID
 	coord_array = [x, y]
 	candidates[id] = coord_array
+
+	cell = 0
 	
 =begin
 This block says:
@@ -63,9 +64,11 @@ This block says:
 	w.times do |x1|
     	h.times do |y1|
      		grid[x + x1][y + y1] += 1
-     		cell = [[x + x1], [y + y1]]
-     		seen[cell] = grid[x + x1][y + y1]
-     	end
+     		cell = grid[x + x1][y + y1]
+     		if cell > 1
+    			candidates.delete_if {|key, value| key == id}
+     		end
+    	end
     end
 end
 
@@ -74,22 +77,6 @@ end
 TO TRY: Keep a record of every cell you've seen and how many times you've seen it, then remove every cell with a value > 2 from the hash and return the resulting matching ID
 
 =end
-
-seen = seen.delete_if {|key, value| value > 1}
-
-seen.each {
-	|skey, svalue|
-	
-		candidates.delete_if{
-		|ckey, cvalue|
-		cvalue == skey
-		}
-	
-	}
-	
-candidates.invert
-candidates.uniq
-candidates.invert
 
 
 # Take the grid array, flatten it, pick all cells where the number in them is greater than 1, and return that count.

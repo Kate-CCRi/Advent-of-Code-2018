@@ -34,7 +34,6 @@ This line splits the claim into two pieces twice. The command is evaluated left 
 	x, y = coord.split(",").map(&:to_i)
 	
 	# Split the dimensions on "x" and assign the values to w and h
-	# Explicitly cast everything to integers
 	w, h = dim.split("x").map(&:to_i)
 	
 =begin

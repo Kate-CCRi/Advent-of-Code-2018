@@ -118,15 +118,15 @@ real_log.each do |key, value|
 				number = record[2].to_i
 				guardname = "Guard #{number}"
 				root_node << Tree::TreeNode.new(guardname, guardname)
+		rescue StructuredWarnings::StandardWarning
+				next
+			else
 				current_node = root_node[guardname]
 				
 				puts root_node.print_tree
 				puts root_node.class
 				puts current_node.class
-			end
-				
-		rescue StructuredWarnings::StandardWarning
-			next
+			end	
 		end
 			
 		begin
@@ -145,18 +145,15 @@ real_log.each do |key, value|
 				time_asleep = wake_time - sleeptime
 				nodename = key			
 				current_node << Tree::TreeNode.new(key, key)
+		rescue StructuredWarnings::StandardWarning
+			ensure
 				current_node = root_node[guardname][key]
-				
 				time_asleep.times do
 					current_node << Tree::TreeNode.new(sleeptime, sleeptime)
 					sleeptime += 1	
-				end	
-				
+				end			
 			end
-			
-		rescue StructuredWarnings::StandardWarning
-		end
-		
+		end	
 	end
 end
 

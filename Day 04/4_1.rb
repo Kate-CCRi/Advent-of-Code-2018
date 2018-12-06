@@ -79,28 +79,7 @@ real_log.each do |date, record|
 	end
 end
 
-puts real_log.inspect
-
-# Time for a new approach.
-
-=begin
-
-Pseudocode:
-
-Make a nested array [Guard[Minute Number[Times Seen]]] <-- this should be a hash with arrays in it so that you don't have to worry about duplicating guards
-
-TODO: FIX
-
-For each day
-	Find the guard that's on duty.
-	Find the time he went to sleep.
-	Find the time he woke up.
-	Calculate the number of minutes he was asleep.
-	Go to the minute he went to sleep.
-	From that minute .times do
-		increment the times seen <-- I had some cute code for this, I need to find it
-End
-=end
+puts real_log
 
 # Initializes the array to hold the Guard information - Level 1 = Guard, Level 2 = Minute, Level 3 = times seen
 
@@ -114,7 +93,6 @@ real_log.each do |date, entry|
 	
 		time = record[0].to_i
 		activity = record[1]
-		count = 0
 	
 		if activity == "Guard"
 			# Only set the "gname" variable if the record is for a guard coming on shift
@@ -122,32 +100,28 @@ real_log.each do |date, entry|
 			# Check to see if this Guard already exists
 			if info.key?(activity)
 				next
-			# If not, create a new hash entry for that guard which contains a new hash using the minute number as the key and the number of times you've seen it as the value
+			# If not, create a new hash entry for that guard which contains a new array of 60 zeroes to represent the minutes
 			else
-				info[gname] = {0 => count}
+				info[gname] = Array.new(60, 0)
 			end
 		end
 		
+		# Since the sorting makes it so that "falls" always comes before "wakes", we can set this variable here and use it in the next round.
 		if activity == "falls"
 			sleeptime = time
 		end
 		
+		# Here's where it gets interesting.
 		if activity == "wakes"
-			waketime = time
-			time_asleep = waketime - sleeptime
-			 
-			info.each do |guard, minutes| 
-				if guard = gname
-					minutes.each do |time, seen|
-						if minutes.key?(sleeptime)
-							seen +=1
-						else
-							minutes[sleeptime] = 1
-						end
-					end
-				end
+			waketime = time - 1
+			
+			min_array = info[gname]
+
+			for i in sleeptime..waketime do
+				min_array[i] = min_array[i] + 1
+				
 			end
-		end
+		end			
 	end
 end
 

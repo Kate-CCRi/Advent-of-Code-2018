@@ -79,15 +79,21 @@ real_log.each do |date, record|
 	end
 end
 
-puts real_log
-
+# Ugh, this comment is wrong, FIXIT
 # Initializes the array to hold the Guard information - Level 1 = Guard, Level 2 = Minute, Level 3 = times seen
 
 info = Hash.new
 sleeptime = 0
 gname = ""
 
+outer_run = 0
+inner_run = 0
+
 real_log.each do |date, entry|
+
+puts date.inspect
+puts entry.inspect
+
 
 	entry.each do |record|
 	
@@ -121,8 +127,13 @@ real_log.each do |date, entry|
 				min_array[i] = min_array[i] + 1
 				
 			end
-		end			
+		end	
+		inner_run += 1
+		puts inner_run		
 	end
+	
+	outer_run += 1
+	puts outer_run	
 end
 
 puts info.inspect

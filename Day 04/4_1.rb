@@ -86,14 +86,7 @@ info = Hash.new
 sleeptime = 0
 gname = ""
 
-outer_run = 0
-inner_run = 0
-
 real_log.each do |date, entry|
-
-puts date.inspect
-puts entry.inspect
-
 
 	entry.each do |record|
 	
@@ -103,27 +96,20 @@ puts entry.inspect
 		if activity == "Guard"
 			# Only set the "gname" variable if the record is for a guard coming on shift
 			gname = "#{record[1]} #{record[2]}"
-			unless info.key?(activity)
+			unless info.key?(gname)
 				info[gname] = Array.new(60, 0)
 			end
 		elsif activity == "falls"
 			sleeptime = time
 		elsif activity == "wakes"
 			waketime = time - 1
-			
 			min_array = info[gname]
 
 			for i in sleeptime..waketime do
-				min_array[i] = min_array[i] + 1
-				
+				min_array[i] = min_array[i] + 1	
 			end
-		end	
-		inner_run += 1
-		puts inner_run		
+		end		
 	end
-	
-	outer_run += 1
-	puts outer_run	
 end
 
 puts info.inspect

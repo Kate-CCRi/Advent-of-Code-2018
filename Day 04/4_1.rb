@@ -103,11 +103,7 @@ puts entry.inspect
 		if activity == "Guard"
 			# Only set the "gname" variable if the record is for a guard coming on shift
 			gname = "#{record[1]} #{record[2]}"
-			# Check to see if this Guard already exists
-			if info.key?(activity)
-				next
-			# If not, create a new hash entry for that guard which contains a new array of 60 zeroes to represent the minutes
-			else
+			unless info.key?(activity)
 				info[gname] = Array.new(60, 0)
 			end
 		end

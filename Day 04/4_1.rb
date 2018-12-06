@@ -106,15 +106,9 @@ puts entry.inspect
 			unless info.key?(activity)
 				info[gname] = Array.new(60, 0)
 			end
-		end
-		
-		# Since the sorting makes it so that "falls" always comes before "wakes", we can set this variable here and use it in the next round.
-		if activity == "falls"
+		elsif activity == "falls"
 			sleeptime = time
-		end
-		
-		# Here's where it gets interesting.
-		if activity == "wakes"
+		elsif activity == "wakes"
 			waketime = time - 1
 			
 			min_array = info[gname]

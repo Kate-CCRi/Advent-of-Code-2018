@@ -1,5 +1,8 @@
 #!/usr/bin/ruby
 
+require 'rubytree'
+require 'tree'
+
 # Get the input file
 input = File.read("day_4_test.txt")
 
@@ -76,8 +79,6 @@ real_log.each do |date, record|
 	end
 end
 
-
-
 =begin
 Create a nested array like so:
 [
@@ -97,5 +98,45 @@ Then:
 	Mark the cells in the range of the "marked" array as "asleep".
 =end
 
+root_node = Tree::TreeNode.new("ROOT", "Schedule")
 
+puts root_node.print_tree
 
+real_log.each do |key, value|
+
+	sleeptime = ""
+	current_node = nil
+	guardname = ""
+
+	value.each do |record|
+		
+
+# Need to an an "exists" check here so it doesn't try to make another one if the guard is used more than once.
+
+		if record[1] == "Guard"
+			number = record[2].to_i
+			guardname = "Guard #{number}"
+			root_node << Tree::TreeNode.new(guardname, guardname)
+			current_node = root_node[guardname]
+			puts root_node.print_tree
+			puts root_node.class
+			puts current_node.class
+			
+# It's adding the same day twice, why?			
+		elsif record[1] == "falls"
+			sleeptime = record[0].to_i
+		elsif record[1] == "wakes"
+			wake_time = record[0].to_i
+			time_asleep = wake_time - sleeptime
+			nodename = key			
+			current_node << Tree::TreeNode.new(key, key)
+			current_node = root_node[guardname][key]
+			time_asleep.times do
+				current_node << Tree::TreeNode.new(sleeptime, sleeptime)
+				sleeptime += 1	
+			end
+		end
+	end
+end
+
+puts root_node.print_tree

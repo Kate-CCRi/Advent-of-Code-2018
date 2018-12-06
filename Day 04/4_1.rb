@@ -79,82 +79,76 @@ real_log.each do |date, record|
 	end
 end
 
+puts real_log.inspect
+
+# Time for a new approach.
+
 =begin
-Create a nested array like so:
-[
-	Day
-	[
-		Guard
-		[
-		0..59
-		]
-	]
-]
-	
-If the first item in the line after the time is "Guard", go to that line in the array.
-Then:
-	If the first item in the next line after the time is "falls", put the minutes in that timestamp into a "marked" array.
-	If the first item in the line after the time is "wakes", put (the minute - 1) in that timestamp into the "marked" array AND
-	Mark the cells in the range of the "marked" array as "asleep".
+
+Pseudocode:
+
+Make a nested array [Guard[Minute Number[Times Seen]]] <-- this should be a hash with arrays in it so that you don't have to worry about duplicating guards
+
+TODO: FIX
+
+For each day
+	Find the guard that's on duty.
+	Find the time he went to sleep.
+	Find the time he woke up.
+	Calculate the number of minutes he was asleep.
+	Go to the minute he went to sleep.
+	From that minute .times do
+		increment the times seen <-- I had some cute code for this, I need to find it
+End
 =end
 
-root_node = Tree::TreeNode.new("ROOT", "Schedule")
+# Initializes the array to hold the Guard information - Level 1 = Guard, Level 2 = Minute, Level 3 = times seen
 
-puts root_node.print_tree
+info = Hash.new
+sleeptime = 0
+gname = ""
 
-real_log.each do |key, value|
+real_log.each do |date, entry|
 
-	sleeptime = ""
-	current_node = nil
-	guardname = ""
-
-	value.each do |record|
-
-# Still doesn't handle the "I've seen this guard before" case
-		
-		begin
-		
-			if record[1] == "Guard"
-				number = record[2].to_i
-				guardname = "Guard #{number}"
-				root_node << Tree::TreeNode.new(guardname, guardname)
-		rescue StructuredWarnings::StandardWarning
+	entry.each do |record|
+	
+		time = record[0].to_i
+		activity = record[1]
+		count = 0
+	
+		if activity == "Guard"
+			# Only set the "gname" variable if the record is for a guard coming on shift
+			gname = "#{record[1]} #{record[2]}"
+			# Check to see if this Guard already exists
+			if info.key?(activity)
 				next
+			# If not, create a new hash entry for that guard which contains a new hash using the minute number as the key and the number of times you've seen it as the value
 			else
-				current_node = root_node[guardname]
-				
-				puts root_node.print_tree
-				puts root_node.class
-				puts current_node.class
-			end	
+				info[gname] = {0 => count}
+			end
 		end
-			
-		begin
-			
-			if record[1] == "falls"
-				sleeptime = record[0].to_i
-			end
-			
-		rescue StructuredWarnings::StandardWarning=>e
-			puts e.message
-		end			
 		
-		begin
-			if record[1] == "wakes"
-				wake_time = record[0].to_i
-				time_asleep = wake_time - sleeptime
-				nodename = key			
-				current_node << Tree::TreeNode.new(key, key)
-		rescue StructuredWarnings::StandardWarning
-			ensure
-				current_node = root_node[guardname][key]
-				time_asleep.times do
-					current_node << Tree::TreeNode.new(sleeptime, sleeptime)
-					sleeptime += 1	
-				end			
+		if activity == "falls"
+			sleeptime = time
+		end
+		
+		if activity == "wakes"
+			waketime = time
+			time_asleep = waketime - sleeptime
+			 
+			info.each do |guard, minutes| 
+				if guard = gname
+					minutes.each do |time, seen|
+						if minutes.key?(sleeptime)
+							seen +=1
+						else
+							minutes[sleeptime] = 1
+						end
+					end
+				end
 			end
-		end	
+		end
 	end
 end
 
-puts root_node.print_tree
+puts info.inspect

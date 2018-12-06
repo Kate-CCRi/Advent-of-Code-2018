@@ -109,31 +109,42 @@ real_log.each do |key, value|
 	guardname = ""
 
 	value.each do |record|
+
+# Add some error handling. This... does prevent the errors from appearing but also seems to prevent the code from *running*. Possibly because rubytree only has one error class and they're all the same so the rescue is hard.
 		
-
-# Need to an an "exists" check here so it doesn't try to make another one if the guard is used more than once.
-
-		if record[1] == "Guard"
-			number = record[2].to_i
-			guardname = "Guard #{number}"
-			root_node << Tree::TreeNode.new(guardname, guardname)
-			current_node = root_node[guardname]
-			puts root_node.print_tree
-			puts root_node.class
-			puts current_node.class
-			
-# It's adding the same day twice, why?			
-		elsif record[1] == "falls"
-			sleeptime = record[0].to_i
-		elsif record[1] == "wakes"
-			wake_time = record[0].to_i
-			time_asleep = wake_time - sleeptime
-			nodename = key			
-			current_node << Tree::TreeNode.new(key, key)
-			current_node = root_node[guardname][key]
-			time_asleep.times do
-				current_node << Tree::TreeNode.new(sleeptime, sleeptime)
-				sleeptime += 1	
+		begin
+		
+			if record[1] == "Guard"
+				rescue StructuredWarnings::StandardWarning
+				next
+				
+				number = record[2].to_i
+				guardname = "Guard #{number}"
+				root_node << Tree::TreeNode.new(guardname, guardname)
+				current_node = root_node[guardname]
+				
+				puts root_node.print_tree
+				puts root_node.class
+				puts current_node.class
+				
+			elsif record[1] == "falls"
+				rescue StructuredWarnings::StandardWarning=>
+				puts e
+				
+				sleeptime = record[0].to_i
+				
+			elsif record[1] == "wakes"
+				rescue StructuredWarnings::StandardWarning
+				
+				wake_time = record[0].to_i
+				time_asleep = wake_time - sleeptime
+				nodename = key			
+				current_node << Tree::TreeNode.new(key, key)
+				current_node = root_node[guardname][key]
+				time_asleep.times do
+					current_node << Tree::TreeNode.new(sleeptime, sleeptime)
+					sleeptime += 1	
+				end	
 			end
 		end
 	end

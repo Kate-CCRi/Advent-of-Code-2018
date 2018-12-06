@@ -110,14 +110,11 @@ real_log.each do |key, value|
 
 	value.each do |record|
 
-# Add some error handling. This... does prevent the errors from appearing but also seems to prevent the code from *running*. Possibly because rubytree only has one error class and they're all the same so the rescue is hard.
+# Still doesn't handle the "I've seen this guard before" case
 		
 		begin
 		
 			if record[1] == "Guard"
-				rescue StructuredWarnings::StandardWarning
-				next
-				
 				number = record[2].to_i
 				guardname = "Guard #{number}"
 				root_node << Tree::TreeNode.new(guardname, guardname)
@@ -126,27 +123,40 @@ real_log.each do |key, value|
 				puts root_node.print_tree
 				puts root_node.class
 				puts current_node.class
+			end
 				
-			elsif record[1] == "falls"
-				rescue StructuredWarnings::StandardWarning=>
-				puts e
-				
+		rescue StructuredWarnings::StandardWarning
+			next
+		end
+			
+		begin
+			
+			if record[1] == "falls"
 				sleeptime = record[0].to_i
-				
-			elsif record[1] == "wakes"
-				rescue StructuredWarnings::StandardWarning
-				
+			end
+			
+		rescue StructuredWarnings::StandardWarning=>e
+			puts e.message
+		end			
+		
+		begin
+			if record[1] == "wakes"
 				wake_time = record[0].to_i
 				time_asleep = wake_time - sleeptime
 				nodename = key			
 				current_node << Tree::TreeNode.new(key, key)
 				current_node = root_node[guardname][key]
+				
 				time_asleep.times do
 					current_node << Tree::TreeNode.new(sleeptime, sleeptime)
 					sleeptime += 1	
 				end	
+				
 			end
+			
+		rescue StructuredWarnings::StandardWarning
 		end
+		
 	end
 end
 

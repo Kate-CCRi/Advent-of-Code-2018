@@ -1,8 +1,5 @@
 #!/usr/bin/ruby
 
-require 'rubytree'
-require 'tree'
-
 # Get the input file
 input = File.read("day_4_test.txt")
 
@@ -95,7 +92,7 @@ real_log.each do |date, entry|
 	
 		if activity == "Guard"
 			# Only set the "gname" variable if the record is for a guard coming on shift
-			gname = "#{record[1]} #{record[2]}"
+			gname = "#{record[2]}"
 			unless info.key?(gname)
 				info[gname] = Array.new(60, 0)
 			end
@@ -112,4 +109,23 @@ real_log.each do |date, entry|
 	end
 end
 
-puts info.inspect
+# Set up a hash for the sleep times
+
+sleepiest = {}
+
+# Find the guard that sleeps the most and what minute they sleep the most
+info.each do |gname, times|
+
+	# This sums up all the values in the "times" array.
+	sleep = times.inject(0) {|sum, i| sum + i}
+	sleepiest[gname] = sleep
+	
+	# What minute did each guard sleep the most? This returns the index (i.e. minute number) of the highest value in the array.
+	puts times.index(times.max)
+
+end
+
+# Compare the times and output the max
+sleepiest.each {|key, value| puts key if value == sleepiest.values.max}
+
+

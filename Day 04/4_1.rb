@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 # Get the input file
-input = File.read("day_4_test.txt")
+input = File.read("day_4_input.txt")
 
 # Make a new array called "logs" that has the text from "input" split on the newline character (which conveniently makes that character go away). This also automatically sorts it into the proper day/time order.
 
@@ -115,52 +115,63 @@ sleepiest_guard = {}
 sleepiest_minute = {}
 sleep_frequency = {}
 
-sguard = 0
-smin = 0
-sfreq = 0
-stimes = 0
+most_sleep = 0
+most_sleep_minute = 0
+frequent_sleeper = 0
+most_frequent_minute = 0
+
+# TODO The problem here appears to be with the "sleepiest minute" code for the most frequent sleeper.
+
 
 # Find the guard that sleeps the most and what minute they sleep the most
 info.each do |gname, times|
+
+# Find the guard with the highest total sleep
 
 	# This sums up all the values in the "times" array.
 	sleepy = times.inject(0) {|sum, i| sum + i}
 	# This pushes the total number of minutes asleep to the "sleepiest_guard" array
 	sleepiest_guard[gname] = sleepy
 	# This sets "sguard" to the guard number if they have the highest total number of minutes asleep
-	sleepiest_guard.each {|guard, minutes| sguard = guard if minutes == sleepiest_guard.values.max}
+	sleepiest_guard.each {|guard, minutes| most_sleep = guard if minutes == sleepiest_guard.values.max}
 
+# Find the minute in which that guard was asleep most often	
 
-	
 	# This finds the index (i.e. minute) in which the guard was asleep most often
 	minute = times.index(times.max)
-	freq = times.max
 	# This pushes the sleepiest minute to the "sleepiest_minute" array
 	sleepiest_minute[gname] = minute
+	# This sets "smin" to the sleepiest minute if the key is "sguard" (finds the sleepiest minute of the guard who slept the most minutes)
+	sleepiest_minute.each {|key, value| most_sleep_minute = value if key == most_sleep}
+	
+	
+	freq = times.max
 	sleep_frequency[gname] = freq
 	
-	# This sets "smin" to the sleepiest minute if the key is "sguard" (finds the sleepiest minute of the guard who slept the most minutes)
-	sleepiest_minute.each {|key, value| smin = value if key == sguard}
+	# This finds the guard who slept the most frequently in the same minute.
+	sleep_frequency.each {|key, value| frequent_sleeper = key if value == sleep_frequency.values.max}
 	
 	# This sets "stimes" to the minute with the highest number of sleep times
-	sleepiest_minute.each {|key, value| stimes = value if value == sleepiest_minute.values.max}
+	sleepiest_minute.each {|key, value| most_frequent_minute = value if value == sleepiest_minute.values.max}
 
-	# This finds the guard who slept the most frequently in the same minute.
-	sleep_frequency.each {|key, value| sfreq = key if value == sleep_frequency.values.max}
+	
 	
 end
 
-part1 = sguard.to_i * smin.to_i
+puts sleepiest_guard.inspect
+puts sleepiest_minute.inspect
 
-part2 = sfreq.to_i * stimes.to_i
+part1 = most_sleep.to_i * most_sleep_minute.to_i
 
-puts "The sleepiest guard is #{sguard}."
-puts "The minute they slept the most in is #{smin}."
+part2 = frequent_sleeper.to_i * most_frequent_minute.to_i
+
+puts "The sleepiest guard is #{most_sleep}."
+puts "The minute they slept the most in is #{most_sleep_minute}."
 
 puts "The answer to part 1 is #{part1}."
 
-puts "The guard who slept the most times in one minute is #{sfreq}."
-puts "That minute is #{stimes}."
+puts "The guard who slept the most times in one minute is #{frequent_sleeper}."
+puts "That minute is #{most_frequent_minute}."
 puts "The answer to part 2 is #{part2}."
 
 

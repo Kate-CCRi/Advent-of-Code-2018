@@ -120,9 +120,6 @@ most_sleep_minute = 0
 frequent_sleeper = 0
 most_frequent_minute = 0
 
-# TODO The problem here appears to be with the "sleepiest minute" code for the most frequent sleeper.
-
-
 # Find the guard that sleeps the most and what minute they sleep the most
 info.each do |gname, times|
 
@@ -147,19 +144,16 @@ info.each do |gname, times|
 	
 	freq = times.max
 	sleep_frequency[gname] = freq
+
 	
 	# This finds the guard who slept the most frequently in the same minute.
 	sleep_frequency.each {|key, value| frequent_sleeper = key if value == sleep_frequency.values.max}
 	
 	# This sets "stimes" to the minute with the highest number of sleep times
-	sleepiest_minute.each {|key, value| most_frequent_minute = value if value == sleepiest_minute.values.max}
-
-	
+	sleepiest_minute.each {|key, value| most_frequent_minute = value if key == frequent_sleeper}
 	
 end
 
-puts sleepiest_guard.inspect
-puts sleepiest_minute.inspect
 
 part1 = most_sleep.to_i * most_sleep_minute.to_i
 

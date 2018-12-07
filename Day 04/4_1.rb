@@ -111,21 +111,57 @@ end
 
 # Set up a hash for the sleep times
 
-sleepiest = {}
+sleepiest_guard = {}
+sleepiest_minute = {}
+sleep_frequency = {}
+
+sguard = 0
+smin = 0
+sfreq = 0
+stimes = 0
 
 # Find the guard that sleeps the most and what minute they sleep the most
 info.each do |gname, times|
 
 	# This sums up all the values in the "times" array.
-	sleep = times.inject(0) {|sum, i| sum + i}
-	sleepiest[gname] = sleep
-	
-	# What minute did each guard sleep the most? This returns the index (i.e. minute number) of the highest value in the array.
-	puts times.index(times.max)
+	sleepy = times.inject(0) {|sum, i| sum + i}
+	# This pushes the total number of minutes asleep to the "sleepiest_guard" array
+	sleepiest_guard[gname] = sleepy
+	# This sets "sguard" to the guard number if they have the highest total number of minutes asleep
+	sleepiest_guard.each {|guard, minutes| sguard = guard if minutes == sleepiest_guard.values.max}
 
+
+	
+	# This finds the index (i.e. minute) in which the guard was asleep most often
+	minute = times.index(times.max)
+	freq = times.max
+	# This pushes the sleepiest minute to the "sleepiest_minute" array
+	sleepiest_minute[gname] = minute
+	sleep_frequency[gname] = freq
+	
+	# This sets "smin" to the sleepiest minute if the key is "sguard" (finds the sleepiest minute of the guard who slept the most minutes)
+	sleepiest_minute.each {|key, value| smin = value if key == sguard}
+	
+	# This sets "stimes" to the minute with the highest number of sleep times
+	sleepiest_minute.each {|key, value| stimes = value if value == sleepiest_minute.values.max}
+
+	# This finds the guard who slept the most frequently in the same minute.
+	sleep_frequency.each {|key, value| sfreq = key if value == sleep_frequency.values.max}
+	
 end
 
-# Compare the times and output the max
-sleepiest.each {|key, value| puts key if value == sleepiest.values.max}
+part1 = sguard.to_i * smin.to_i
+
+part2 = sfreq.to_i * stimes.to_i
+
+puts "The sleepiest guard is #{sguard}."
+puts "The minute they slept the most in is #{smin}."
+
+puts "The answer to part 1 is #{part1}."
+
+puts "The guard who slept the most times in one minute is #{sfreq}."
+puts "That minute is #{stimes}."
+puts "The answer to part 2 is #{part2}."
+
 
 

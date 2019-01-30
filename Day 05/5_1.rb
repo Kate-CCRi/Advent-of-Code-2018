@@ -4,29 +4,28 @@
 input = File.read("day_5_test.txt")
 
 # Set up an array to read the input by character
-
-test_answer = ["d", "a", "b", "C", "B", "A", "c", "a", "D", "A"]
 polymer = input.chars
-newpolymer = []
 
+# Establish an iteration counter
+i = 0
 
-# I need to wrap this in a new iterator so that I can set polymer to the cleaned version and go over it again
-
-
-	# Iterate over the array by consecutive pairs: (1,2) then (2, 3) etc.
-	polymer.each_cons(2) do |x, y|
-
-		unless x == y.upcase or x == y.downcase
-		
-			newpolymer << x
-
+# Start looping through
+loop do
+	# Stop looping if you've reached the second-to-last character (nothing left to compare)
+	break if i == polymer.size - 1
+	# Checks to see if the first thing is an uppercase or lowercase of the second thing
+	if polymer[i].swapcase == polymer[i + 1]
+		# If yes, delete the two things you just compared
+		2.times {polymer.delete_at(i)}
+		# Unless you were at the first character, back up one step
+		unless i == 0
+			i -= 1
 		end
+	# If the comparison is false, move on to the next set
+	else
+		i += 1
 	end
-	
-if newpolymer == test_answer
-	puts "This is correct."
-else
-	puts test_answer.inspect
-	puts newpolymer.inspect
 end
 
+# Print the length of the resulting polymer
+puts polymer.length

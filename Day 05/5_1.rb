@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 # Get the input file
-input = File.read("day_5_test.txt")
+input = File.read("day_5_input.txt")
 
 # Set up an array to read the input by character
 polymer = input.chars

@@ -69,7 +69,7 @@ grid.each do |row|
 
 	row.each do |item|
 	
-		puts item+row_num
+		row[item] = item+row_num
 		
 	end
 	row_num +=1

@@ -35,10 +35,13 @@ The largest count is the largest bounded area.
 
 =end
 
-# Determine the size of the necessary grid
+# Determine the size of the necessary grid and set up an array of the coordinates with identifiers
 
 largest_x = 0
 largest_y = 0
+
+ident = 1
+identified = []
 
 input.each do |coords|
 	x, y = coords.split(",").map(&:to_i)
@@ -50,13 +53,21 @@ input.each do |coords|
 	if y > largest_y
 		largest_y = y
 	end
+	
+	identified << {"N" + ident.to_s => [x, y]}
+	ident += 1
 end
-
-puts largest_x
-puts largest_y
 
 # Start a new x by y 2D array full of 0s as placeholders
 
 grid = Array.new(largest_x){Array.new(largest_y, 0)}
 
-puts grid.inspect
+# Pull the identifier and coordinates back out of the "identified" array
+
+identified.each do |info|
+	identity, coordinates = info.keys, info.values
+	x, y = coordinates.split(",").map(&:to_i)
+end
+	
+# The coordinates of each grid slot are grid[y][x], so I should be able to produce the Manhattan Distance if I can figure out how to pull the indexes for the 2D array.
+	

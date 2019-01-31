@@ -1,7 +1,12 @@
 #!/usr/bin/ruby
 
-# Get the input file
-input = File.read("day_6_test.txt")
+# Read in the file and push each line of it to an array so you can use .each with it later
+
+input = []
+f = File.open("day_6_test.txt")
+while line = f.gets do
+	input << line
+end
 
 =begin
 
@@ -29,3 +34,29 @@ Count the number of times you've seen each value in the grid.
 The largest count is the largest bounded area.
 
 =end
+
+# Determine the size of the necessary grid
+
+largest_x = 0
+largest_y = 0
+
+input.each do |coords|
+	x, y = coords.split(",").map(&:to_i)
+	
+	if x > largest_x
+		largest_x = x
+	end
+	
+	if y > largest_y
+		largest_y = y
+	end
+end
+
+puts largest_x
+puts largest_y
+
+# Start a new x by y 2D array full of 0s as placeholders
+
+grid = Array.new(largest_x){Array.new(largest_y, 0)}
+
+puts grid.inspect

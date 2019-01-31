@@ -58,16 +58,34 @@ input.each do |coords|
 	ident += 1
 end
 
-# Start a new x by y 2D array full of 0s as placeholders
+# Start a new x by y 2D array full of placeholders
 
-grid = Array.new(largest_x){Array.new(largest_y, 0)}
+grid = Array.new(largest_x){Array.new(largest_y) {|index| index}}
+
+# The coordinates of each grid slot are grid[y][x], so I should be able to produce the Manhattan Distance if I can figure out how to pull the indexes for the 2D array.
+row_num = 0
+
+grid.each do |row|
+
+	row.each do |item|
+	
+		puts item+row_num
+		
+	end
+	row_num +=1
+end
+
+puts grid.inspect
+
 
 # Pull the identifier and coordinates back out of the "identified" array
 
 identified.each do |info|
 	identity, coordinates = info.keys, info.values
-	x, y = coordinates.split(",").map(&:to_i)
+	x = coordinates[0]
+	y = coordinates[1]
 end
 	
-# The coordinates of each grid slot are grid[y][x], so I should be able to produce the Manhattan Distance if I can figure out how to pull the indexes for the 2D array.
-	
+
+
+

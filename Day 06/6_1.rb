@@ -72,7 +72,9 @@ grid.each do |row|
 		row[item] = item+row_num
 		
 	end
+	
 	row_num +=1
+	
 end
 
 puts grid.inspect
@@ -82,8 +84,43 @@ puts grid.inspect
 
 identified.each do |info|
 	identity, coordinates = info.keys, info.values
+
+	coordinates.flatten
+	
 	x = coordinates[0]
 	y = coordinates[1]
+
+
+	grid.each do |row|
+	
+		row.each do |item|
+		
+			y2 = grid.index(row).to_i
+			x2 = row.index(item).to_i
+			
+			distance = (x-x2).abs + (y-y2).abs
+		
+			if item.class == Number
+				
+				row[item] = {identity => distance}
+				
+			elsif item.class == Hash
+			
+				if item[1] > distance
+					item[1] = distance
+					item[0] = identity
+				end
+			end
+		end
+	end
+
+
+=begin
+
+md = (x - index of grid[index]) + (y - index of grid[index][index])
+
+=end
+	
 end
 	
 

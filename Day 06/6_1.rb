@@ -77,20 +77,19 @@ grid.each do |row|
 	
 end
 
-puts grid.inspect
 
-
-# Pull the identifier and coordinates back out of the "identified" array
 
 identified.each do |info|
+
+# Pull the identifier and coordinates back out of the "identified" array
 	identity, coordinates = info.keys, info.values
 
 	coordinates.flatten
 	
-	x = coordinates[0]
-	y = coordinates[1]
+	x = coordinates[0][0]
+	y = coordinates[0][1]
 
-
+# Fill each grid square with a hash of the closest ID and the manhattan distance to that ID
 	grid.each do |row|
 	
 		row.each do |item|
@@ -100,7 +99,7 @@ identified.each do |info|
 			
 			distance = (x-x2).abs + (y-y2).abs
 		
-			if item.class == Number
+			if item.class == Integer
 				
 				row[item] = {identity => distance}
 				
@@ -112,15 +111,7 @@ identified.each do |info|
 				end
 			end
 		end
-	end
-
-
-=begin
-
-md = (x - index of grid[index]) + (y - index of grid[index][index])
-
-=end
-	
+	end	
 end
 	
 

@@ -93,27 +93,54 @@ identified.each do |info|
 	grid.each do |row|
 	
 		row.each do |item|
-		
+	
+			puts "item is #{item}"
+			
+			# Identify your x2 and y2 (the indexes of the point you're at)
 			y2 = grid.index(row).to_i
 			x2 = row.index(item).to_i
 			
-			distance = (x-x2).abs + (y-y2).abs
+			#Calculate the Manhattan distance between the point you're at and the origin point of this identifier's area
+			distance = (x2-x).abs + (y2-y).abs
 		
+			puts "distance is #{distance} (x1 is #{x}, x2 is #{x2}, y1 is #{y}, y2 is #{y2})"
+			
+			# Check the distance just calculated against the distance already in the grid
 			if item.class == Integer
 				
 				row[item] = {identity => distance}
 				
 			elsif item.class == Hash
 			
-				if item[1] > distance
-					item[1] = distance
-					item[0] = identity
+				temp_id, temp_idist = item.keys, item.values
+				
+				identifier = temp_id[0][0]
+				i_distance = temp_idist[0].to_i
+				
+				puts "identifier is #{identifier}"
+				puts "i_distance is #{i_distance}"
+			
+				if i_distance > distance
+					
+					item = {identity => distance}
+					
+				elsif i_distance == distance
+				
+					item = "Shared"
+					
+				elsif item.class == String
+				
+					next
+				
 				end
 			end
+			
+			puts "the new item is #{item}"
 		end
 	end	
 end
 	
+puts grid.inspect
 
 
 

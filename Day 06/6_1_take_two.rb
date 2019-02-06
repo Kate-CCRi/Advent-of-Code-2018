@@ -37,7 +37,7 @@ end
 
 
 # This creates a grid of size largest_x by largest _y and fills it with empty arrays. (NOTE: The y value creates the stack of arrays, the x value determines the size of each array in the stack. Since we are starting with 0 as our top row and first column, and would like at least a one-space edge from each point, we must add an offset to the size of our grid to accomodate that.)
-grid = Array.new(y_max + 1){Array.new(x_max + 1) {Array.new}}
+grid = Array.new(y_max + 1){Array.new(x_max + 2) {Array.new}}
 
 
 # This fills the empty arrays with the Manhattan distance to (0, 0)
@@ -55,17 +55,11 @@ grid.each do |row|
 	
 end
 
-# This pulls the x, y, and ID of each set of given coordinates back out to work with
+totals = {}
 
-ids = []
+coordinates.each do |x, y, id|
 
-coordinates.each do |identified|
-
-	x_id = identified[0]
-	y_id = identified[1]
-	id = identified[2]
-	
-	ids << id
+	totals[id] = 0
 
 # Iterate through each item in the grid and calculate the Manhattan distance between that item and the current set of coordinates. The current Y is the index from the grid, and the current X is the index from the row.
 
@@ -73,7 +67,7 @@ coordinates.each do |identified|
 	
 		grid[y_current].each_index do |x_current|
 		
-			distance = (x_current - x_id).abs + (y_current - y_id).abs
+			distance = (x_current - x).abs + (y_current - y).abs
 
 # This puts the ID of the coordinates with the smallest Manhattan distance into the slot in the grid, or adds the ID if the distances are the same. Note that the first "if" only has an effect on the first run, since after that there will always be a distances to compare with.
 
@@ -98,49 +92,36 @@ end
 
 # Iterate over the ID array, and for each ID, count the number of times it appears in the grid. Break if the index of the slot containing the ID is 0, x_max, or y_max. Push the remaining IDs and counts to a new array, then return the largest count.
 
-totals = []
+puts totals.inspect 
 
-ids.each do |id|
-
-	count = 0
-
+coordinates.each do |x, y, id|
+	
+count = 0
+	
 	grid.each_index do |y_current|
 	
 		grid[y_current].each_index do |x_current|
-			
-			unless grid[y_current][x_current].include?(id) && grid[y_current][x_current].length == 2
-			
-				next
+		
+			if ((grid[y_current] == grid.first || grid[y_current] == grid.last)  && grid[y_current][x_current].include?(id))
+
+				totals.delete(id)
+				
+			elsif ((grid[y_current][x_current] == grid[y_current].first || grid[y_current][x_current] == grid[y_current].last) && grid[y_current][x_current].include?(id))
+
+				totals.delete(id)
+				
+			elsif (grid[y_current][x_current].include?(id) && grid[y_current][x_current].length == 2)
+				
+				count += 1	
 				
 			end
-			
-			if y_current == 0
-			
-				break
-				
-			elsif y_current == y_max
-			
-				break
-		
-			elsif x_current == 0
-			
-				break
-				
-			elsif x_current == x_max
-			
-				break
-			
-			else
-			
-				count += 1
-				
-			end	
 		end
 	end
-	
-	totals << [id, count]
+		
+totals[id] = count
 	
 end
+
 
 puts totals.inspect
 puts totals.max_by {|x| x.last}

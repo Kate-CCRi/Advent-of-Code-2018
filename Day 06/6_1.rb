@@ -5,7 +5,7 @@
 input = []
 f = File.open("day_6_test.txt")
 while line = f.gets do
-	input << line
+	input << line.chomp
 end
 
 =begin
@@ -69,7 +69,7 @@ grid.each do |row|
 
 	row.each do |item|
 	
-		row[item] = item+row_num
+		row[item] = item+row_num.to_i
 		
 	end
 	
@@ -105,6 +105,8 @@ identified.each do |info|
 		
 			puts "distance is #{distance} (x1 is #{x}, x2 is #{x2}, y1 is #{y}, y2 is #{y2})"
 			
+			puts "the item's class is #{item.class}"
+			
 			# Check the distance just calculated against the distance already in the grid
 			if item.class == Integer
 				
@@ -128,11 +130,16 @@ identified.each do |info|
 				
 					item = "Shared"
 					
-				elsif item.class == String
-				
-					next
-				
 				end
+					
+			elsif item.class == String
+				
+				next
+					
+			else 
+				
+				row[item] = {identity => distance}
+				
 			end
 			
 			puts "the new item is #{item}"

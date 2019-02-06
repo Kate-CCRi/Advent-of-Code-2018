@@ -3,7 +3,7 @@
 # Read in the file and push each line of it to an array so you can use .each with it later
 
 input = []
-f = File.open("day_6_input.txt")
+f = File.open("day_6_test.txt")
 while line = f.gets do
 	input << line.chomp
 end
@@ -96,8 +96,6 @@ coordinates.each do |identified|
 	end
 end
 
-puts ids.inspect
-
 # Iterate over the ID array, and for each ID, count the number of times it appears in the grid. Break if the index of the slot containing the ID is 0, x_max, or y_max. Push the remaining IDs and counts to a new array, then return the largest count.
 
 totals = []
@@ -109,8 +107,6 @@ ids.each do |id|
 	grid.each_index do |y_current|
 	
 		grid[y_current].each_index do |x_current|
-		
-			
 			
 			unless grid[y_current][x_current].include?(id) && grid[y_current][x_current].length == 2
 			
@@ -118,11 +114,19 @@ ids.each do |id|
 				
 			end
 			
-			if y_current == 0 or y_current == y_max
+			if y_current == 0
+			
+				break
+				
+			elsif y_current == y_max
 			
 				break
 		
-			elsif x_current == 0 or x_current == x_max
+			elsif x_current == 0
+			
+				break
+				
+			elsif x_current == x_max
 			
 				break
 			
@@ -138,4 +142,5 @@ ids.each do |id|
 	
 end
 
+puts totals.inspect
 puts totals.max_by {|x| x.last}

@@ -3,7 +3,7 @@
 # Read in the file and push each line of it to an array so you can use .each with it later
 
 input = []
-f = File.open("day_6_test.txt")
+f = File.open("day_6_input.txt")
 while line = f.gets do
 	input << line.chomp
 end
@@ -55,11 +55,11 @@ grid.each do |row|
 	
 end
 
-totals = {}
+totals = []
 
 coordinates.each do |x, y, id|
 
-	totals[id] = 0
+	totals << [id, 0]
 
 # Iterate through each item in the grid and calculate the Manhattan distance between that item and the current set of coordinates. The current Y is the index from the grid, and the current X is the index from the row.
 
@@ -90,38 +90,59 @@ coordinates.each do |x, y, id|
 	end
 end
 
-# Iterate over the ID array, and for each ID, count the number of times it appears in the grid. Break if the index of the slot containing the ID is 0, x_max, or y_max. Push the remaining IDs and counts to a new array, then return the largest count.
+# Create the list of IDs that appear on the edges
+drop = []
 
-puts totals.inspect 
+grid.first.each do |distance, id|
 
-coordinates.each do |x, y, id|
-	
-count = 0
-	
-	grid.each_index do |y_current|
-	
-		grid[y_current].each_index do |x_current|
-		
-			if ((grid[y_current] == grid.first || grid[y_current] == grid.last)  && grid[y_current][x_current].include?(id))
-
-				totals.delete(id)
-				
-			elsif ((grid[y_current][x_current] == grid[y_current].first || grid[y_current][x_current] == grid[y_current].last) && grid[y_current][x_current].include?(id))
-
-				totals.delete(id)
-				
-			elsif (grid[y_current][x_current].include?(id) && grid[y_current][x_current].length == 2)
-				
-				count += 1	
-				
-			end
-		end
-	end
-		
-totals[id] = count
+	drop << id
 	
 end
 
+grid.last.each do |distance, id|
 
-puts totals.inspect
-puts totals.max_by {|x| x.last}
+	drop << id
+	
+end
+
+grid.each do |row|
+
+	drop << row.first[1]
+	drop << row.last[1]
+	
+end
+
+# Make the list of those IDs unique to make things faster later
+drops = drop.uniq
+
+# Remove all grid entries that have more than one "closest" point
+tempgrid = []
+
+grid.each do |item|
+	
+	item.each do |entry|
+
+		if entry.length == 2
+	
+			tempgrid << entry
+		end
+	end
+end
+
+# Turn the grid into just a list of the IDs of the point that was closest to that slot in the grid
+newgrid = tempgrid.flatten.delete_if { |item| item.class == Integer}
+
+# Remove the edge IDs from the ID list
+countable = newgrid - drops
+
+# Count how many times each remaining ID appears in the list
+counts = Hash.new 0
+
+countable.each do |id|
+	counts[id] += 1
+end
+
+# Output the largest count
+puts counts.values.max
+	
+		

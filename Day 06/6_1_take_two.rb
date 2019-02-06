@@ -129,7 +129,7 @@ grid.each do |item|
 	end
 end
 
-# Turn the grid into just a list of the IDs of the point that was closest to that slot in the grid
+# Turn the grid into just a list of the IDs of the point that was closest to that slot in the grid. (Flatten does the "turn an array into a list" bit, the "delete_if" + args removes the numbers.)
 newgrid = tempgrid.flatten.delete_if { |item| item.class == Integer}
 
 # Remove the edge IDs from the ID list

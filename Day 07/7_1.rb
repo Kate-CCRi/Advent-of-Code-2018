@@ -4,13 +4,13 @@
 
 words = []
 
-File.readlines('day_7_test.txt').each do |line|
+File.readlines('day_7_input.txt').each do |line|
 	words << line.split(" ")	
 end
 
 # Create hashes to keep the steps in.
 
-ordered = Hash.new { |hash, key| hash[key] = []}
+todo = Hash.new { |hash, key| hash[key] = []}
 blockers = Hash.new { |hash, key| hash[key] = []}
 
 # Make an array for all the names of the steps so you can iterate with it later
@@ -23,7 +23,7 @@ words.each do |line|
 	first = line[1]
 	second = line[7]
 	
-	ordered[first] << second
+	todo[first] << second
 	blockers[second] << first
 	
 	steps << first
@@ -31,136 +31,61 @@ words.each do |line|
 	
 end
 
-# Unique the step name array
-steps = steps.uniq
+options = ["a"]
+ordered = []
 
-puts "The steps are #{steps.inspect}"
+# until ordered.length = steps.length
 
-# Alphabetize the step sequences that follow each new step (note that the ! after sort is what makes this work -- otherwise sort returns a new array instead of sorting the existing one)
-ordered.each do |key, value|
-
-	key = value.sort!
-
-end
-
-# Reverse alphabetize the reverse traversal values (same note about the ! as above)
-blockers.each do |key, value|
-
-	key = value.sort!.reverse!
-
-end
-
-# Start a new array to hold the ordered steps	
-orderedsteps = []
-
-=begin
-
-For each step
-	- if it has blockers, skip it for now
-	- if it doesn't
-		- put its alphabetically first child into the list of things to do
-		- delete that child from the list of available to-dos
-		- delete this task from all blocker lists
-end
-	- return the entire ordered to-do list
+	todo.each do |parent, children|
 	
-=end
-
-# while blockers.length != 0
-	options = []
-
-	steps.each do |step|
-	
-		puts "The current step is #{step}"
-
-	
-		first = "first"
-
-		if orderedsteps.length == 0
+		if ordered.empty?
 		
-			first = step
-	
-			orderedsteps << step
-		
-			blockers.each do |key, value|
-				value.delete(step)	
-			end	
-		
-			orderedsteps << ordered[step][0]
-		
-			ordered.each do |key, value|
+			ordered << parent
 			
-				if value.length == 0
-					ordered.delete(key)
-				elsif key == step
-					options << ordered[step]
-					options.flatten!.sort!
-					puts "Your options are #{options.inspect}"
-					ordered[step].delete_at(0)
-				end
+			blockers.each_value do |value|
+				value.delete(parent)
 			end
 			
-			blockers.each do |key, value|
-				puts blockers.inspect
+			options.clear
 			
-				if value.length == 0
-					blockers.delete(key)
-				end
-				
-				if options.include?(key)
-					options.delete(key)
-				end
+			children.each do |child|
+				if blockers[child].length == 0
+					options << child
+				end	
 			end
+			
+			options.sort!.uniq!
+			
 		end
+	
+		if options[0] == parent
+	
+			ordered << parent
+			options.delete(parent)
 		
-		if ordered.key?(step) and options.include?(step)
-			
-			puts "Step #{step} is not blocked."
-			
-			options.delete(step)
-		
-			unless orderedsteps.include?(step)	
-				orderedsteps << step
+			blockers.each_value do |value|
+				value.delete(parent)
 			end
 		
-			blockers.each do |key, value|
-				value.delete(step)	
-			end	
-		
-			orderedsteps << ordered[step][0]
-			
-			puts ordered[step][0]
-			puts orderedsteps.inspect
-		
-			ordered.each do |key, value|
-
-				if value.length == 0
-					ordered.delete(key)
-				elsif key == step
-					options << ordered[step]
-					options.flatten!.sort!
-					puts "Your options are #{options.inspect}"
-					ordered[step].delete_at(0)
-				end
+			children.each do |child|
+				if blockers[child].length == 0
+					options << child
+				elsif blockers.key?(child) == false
+					options << child
+				end	
 			end
-			
-			blockers.each do |key, value|
-			
-				if value.length == 0
-					blockers.delete(key)
-				end
-			end
-		end
 		
-		
+			options.sort!.uniq!
+		end	
 	end
+	
+#end
 
-
-# end
-
-
-puts orderedsteps.inspect
-puts ordered.inspect
-puts blockers.inspect
-
-
+p todo
+p ordered
+p options
+p blockers
+		
+		
+	
+		

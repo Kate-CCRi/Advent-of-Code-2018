@@ -29,63 +29,59 @@ words.each do |line|
 	steps << first
 	steps << second
 	
+	steps.uniq!
+	
 end
 
-options = ["a"]
+options = []
 ordered = []
 
-# until ordered.length = steps.length
+# Find the starting points for processing
 
-	todo.each do |parent, children|
-	
-		if ordered.empty?
-		
-			ordered << parent
-			
-			blockers.each_value do |value|
-				value.delete(parent)
-			end
-			
-			options.clear
-			
-			children.each do |child|
-				if blockers[child].length == 0
-					options << child
-				end	
-			end
-			
-			options.sort!.uniq!
-			
-		end
-	
-		if options[0] == parent
-	
-			ordered << parent
-			options.delete(parent)
-		
-			blockers.each_value do |value|
-				value.delete(parent)
-			end
-		
-			children.each do |child|
-				if blockers[child].length == 0
-					options << child
-				elsif blockers.key?(child) == false
-					options << child
-				end	
-			end
-		
-			options.sort!.uniq!
-		end	
+todo.each do |parent, children|
+
+	unless blockers.key?(parent)
+		options << parent
 	end
 	
-#end
+	options.sort!.uniq!
+		
+end
 
-p todo
-p ordered
-p options
-p blockers
-		
-		
+# Put the first thing in options into ordered (while removing it from options)
+ordered << options.shift
+
+# Until all the steps have been processed
+until ordered.length == steps.length
+
+# Remove the thing most recently placed into ordered from the blockers
+	blockers.each_value do |value|
 	
+		value.delete(ordered[-1])
 		
+	end
+
+# Put all the unblocked options into the options array
+	blockers.each do |key, value|
+	
+		if value.length == 0
+		
+			options << key
+			
+		end
+		
+	end
+
+# Unique the options array and then sort it alphabetically	
+	options.sort!.uniq!	
+
+# Put the first thing in options into ordered while removing it from options	
+	ordered << options.shift
+
+# Make all the empty blockers go to "ignore" so they won't get caught by the first "if" statement in this "do" loop	
+	blockers[ordered[-1]] << "ignore"
+
+end
+
+# Print the ordered array as one "word"
+puts ordered.join

@@ -69,13 +69,15 @@ working = {}
 
 working[options[0]] = timing[options.shift]
 
-total_time = 1
+total_time = 0
+
+puts "At step #{total_time}, #{working.length} elves are working on #{working.inspect}"
 
 # Until every step has been put into order
-until ordered.length == steps.length
+until working.length == 0
 
-# Increment the total time to cover another step being done
-	total_time += 1
+	
+
 
 # Go through the working hash
 	working.each do |key, value|
@@ -124,15 +126,24 @@ until ordered.length == steps.length
 	
 # Clean up the options array
 	options.sort!.uniq!
+	
+	puts "The available things to be worked on are #{options.inspect}"
 
 # Refill the working array to 5
-	if working.length < 5
+	if working.length < 5 and !options.empty?
 	
 		until working.length == 5 or options.empty?
 			working[options[0]] = timing[options[0]]
 			options.shift
 		end
 		
+	end
+	
+	puts "At step #{total_time}, #{working.length} elves are working on #{working.inspect}"
+
+# Increment the total time to cover another step being done
+	unless working.length == 0
+		total_time += 1
 	end
 	
 end

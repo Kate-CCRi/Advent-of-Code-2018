@@ -4,7 +4,7 @@
 
 words = []
 
-File.readlines('day_7_input.txt').each do |line|
+File.readlines('day_7_test.txt').each do |line|
 	words << line.split(" ")	
 end
 
@@ -21,7 +21,7 @@ timing = {}
 
 counter = 1
 
-("a".."z").each do |letter|
+("A".."Z").each do |letter|
 
 	timing[letter] = counter
 	
@@ -64,41 +64,102 @@ end
 
 # More thoughts: Make it a hash for working, then decrement each value on every pass, when it gets to zero, put the next option in?
 
+# Set up the hash to hold the times and put the first thing into it with its timing.
+working = {}
 
-# Put the first thing in options into ordered (while removing it from options)
-ordered << options.shift
+working[options[0]] = timing[options.shift]
 
-# Until all the steps have been processed
+puts "Here's the timing counter:"
+p timing
+
+puts "Here's the starting working:"
+p working
+
+puts "Here are your starting options:"
+p options
+
+puts "Here are the starting blockers:"
+p blockers
+
+total_time = 0
+
+# Until every step has been put into order
 until ordered.length == steps.length
 
-# Remove the thing most recently placed into ordered from the blockers
-	blockers.each_value do |value|
-	
-		value.delete(ordered[-1])
-		
-	end
+# Increment the total time to cover another step being done
+	total_time += 1
 
-# Put all the unblocked options into the options array
-	blockers.each do |key, value|
+# Go through the working hash
+	working.each do |key, value|
+
+# Set up a holding pen to hold finished items if they finish at the same time
+	holding_pen = []
 	
-		if value.length == 0
-		
-			options << key
+# Decrement the values at each step	
+		if value > 0
+			working[key] = value - 1
+		end
+
+# If the value is 0, put the key into a temporary and remove it from working		
+		if value == 0
 			
+			holding_pen << key
+			working.delete(key)
+		end
+
+# Sort the finished items into alpha order and then push them into the ordered array		
+		holding_pen.sort!
+		
+		holding_pen.each do |item|
+			ordered << item
 		end
 		
 	end
 
-# Unique the options array and then sort it alphabetically	
-	options.sort!.uniq!	
+# Remove all finished items from the blocker hash array.
+	ordered.each do |item|
+	
+		blockers.each_value do |value|
+			value.delete(item)
+		end
+		
+	end
 
-# Put the first thing in options into ordered while removing it from options	
-	ordered << options.shift
+# Find all the items in blockers that are now unblocked and put them into the options
+	blockers.each do |key, value|
+	
+		if value.length == 0
+			options << key	
+			blockers[key] = "ignore"
+		end
+		
+	end
+	
+# Clean up the options array
+	options.sort!.uniq!
 
-# Make all the empty blockers go to "ignore" so they won't get caught by the first "if" statement in this "do" loop	
-	blockers[ordered[-1]] << "ignore"
-
+# Refill the working array to 5
+	if working.length < 5
+	
+		until working.length == 5 or options.empty?
+			working[options[0]] = timing[options[0]]
+			options.shift
+		end
+		
+	end
+	
 end
 
-# Print the ordered array as one "word"
-puts ordered.join
+puts "Here's the current ordered:"
+p ordered
+
+puts "Here's the current working:"
+p working
+
+puts "Here are your current options:"
+p options
+
+puts "Here are the current blockers:"
+p blockers
+
+puts total_time

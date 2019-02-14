@@ -107,9 +107,9 @@ data_array << data_index[1]
 	
 data_index[0].times do
 
+	holder.clear
+
 	unless data_index[index_count] == 0
-	
-		holder.clear
 		
 		holder << data_index[index_count]
 		holder << data_index[index_count + 1]
@@ -119,7 +119,6 @@ data_index[0].times do
 		index_count +=2
 		
 	else
-		holder.clear
 	
 		holder << data_index[index_count]
 		holder << data_index[index_count + 1]
@@ -127,18 +126,19 @@ data_index[0].times do
 		data_array << [holder[0], holder[1]]
 		
 		counter = 2
-		holder.clear
+		
+		holder2 = []
 		
 		data_index[index_count + 1].times do 
-			
-			holder << data_index[index_count + counter]
-			
+			holder2 << data_index[index_count + counter]
 			counter += 1
 		end
 		
-		holder.each do |item|
+		holder2.each do |item|
 			data_array.last << item
 		end
+		
+		index_count += 2
 		
 	end
 end

@@ -6,9 +6,33 @@ char_file = File.open('day_8_input.txt')
 char_file.each(" ") do |char|
 		data_index << char
 end
+# Beginning of a Tree implementation
+module Tree
 
-sum = 0
+	class Node
 
+		attr_accessor :children, :content
+	
+		def initialize(content)
+			@children = []
+			@content = content
+		end
+	
+		def add_child(child)
+			@children << child
+		end
+		
+		def print_subtree(node)
+			children = node.children.map { |child| child.content}
+			puts "#{node.content}: #{children}"
+		end
+		
+	end
+	
+end
+
+
+=begin
 until data_index.length == 0
 
 	puts "The data index length is #{data_index.length}"
@@ -47,4 +71,6 @@ until data_index.length == 0
 end
 
 puts sum
+
+=end
 	

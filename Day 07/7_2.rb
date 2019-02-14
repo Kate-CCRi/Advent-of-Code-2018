@@ -69,19 +69,7 @@ working = {}
 
 working[options[0]] = timing[options.shift]
 
-puts "Here's the timing counter:"
-p timing
-
-puts "Here's the starting working:"
-p working
-
-puts "Here are your starting options:"
-p options
-
-puts "Here are the starting blockers:"
-p blockers
-
-total_time = 0
+total_time = 1
 
 # Until every step has been put into order
 until ordered.length == steps.length
@@ -91,18 +79,21 @@ until ordered.length == steps.length
 
 # Go through the working hash
 	working.each do |key, value|
-
-# Set up a holding pen to hold finished items if they finish at the same time
-	holding_pen = []
 	
 # Decrement the values at each step	
 		if value > 0
 			working[key] = value - 1
 		end
+	end
 
+# Go through the working hash
+	working.each do |key, value|
+
+# Set up a holding pen to hold finished items if they finish at the same time
+	holding_pen = []
+	
 # If the value is 0, put the key into a temporary and remove it from working		
 		if value == 0
-			
 			holding_pen << key
 			working.delete(key)
 		end
@@ -150,16 +141,5 @@ until ordered.length == steps.length
 	
 end
 
-puts "Here's the current ordered:"
-p ordered
-
-puts "Here's the current working:"
-p working
-
-puts "Here are your current options:"
-p options
-
-puts "Here are the current blockers:"
-p blockers
-
+puts "The total time is:"
 puts total_time

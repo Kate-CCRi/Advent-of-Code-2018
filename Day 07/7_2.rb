@@ -4,7 +4,7 @@
 
 words = []
 
-File.readlines('day_7_test.txt').each do |line|
+File.readlines('day_7_input.txt').each do |line|
 	words << line.split(" ")	
 end
 
@@ -19,7 +19,7 @@ steps = []
 # Set up a hash dictionary of letters to times
 timing = {}
 
-counter = 1
+counter = 60
 
 ("A".."Z").each do |letter|
 
@@ -84,10 +84,6 @@ until ordered.length == steps.length
 		if value > 0
 			working[key] = value - 1
 		end
-	end
-
-# Go through the working hash
-	working.each do |key, value|
 
 # Set up a holding pen to hold finished items if they finish at the same time
 	holding_pen = []

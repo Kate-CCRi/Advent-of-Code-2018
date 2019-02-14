@@ -102,14 +102,15 @@ data_array << data_index[1]
 
 	holder = []
 	index_count = 2
+	level = 1
 
 # This sort of does the right thing, but I think maybe I need to make it 'N' times do, where N is the number of children each thing has?
 	
-data_index[0].times do
+# data_index[0].times do
 
-	holder.clear
-
-	unless data_index[index_count] == 0
+	until data_index[index_count] == 0
+		
+		holder.clear
 		
 		holder << data_index[index_count]
 		holder << data_index[index_count + 1]
@@ -117,35 +118,51 @@ data_index[0].times do
 		data_array << [holder[0], holder[1]]
 		
 		index_count +=2
+		level += 1
 		
-	else
+	end
 	
+	if data_index[index_count] == 0
+		holder.clear
+		
 		holder << data_index[index_count]
 		holder << data_index[index_count + 1]
-
-		data_array << [holder[0], holder[1]]
+		
+		holder2 = []
+		holder2 << [holder[0], holder[1]]
 		
 		counter = 2
 		
-		holder2 = []
+		
+		holder3 = []
 		
 		data_index[index_count + 1].times do 
-			holder2 << data_index[index_count + counter]
+			index_count = index_count + counter
+			
+			
+			holder3 << data_index[index_count]
+			
 			counter += 1
+			index_count +=1
 		end
 		
-		holder2.each do |item|
-			data_array.last << item
+		holder3.each do |item|
+			holder2 << item
 		end
 		
-		index_count += 2
+		data_array.last << holder2
 		
 	end
-end
+	
+	working_on = data_array.pop
 
+		
+# end
 
-
+puts data_index[index_count]
 
 p data_array
+
+p data_array.last
 
 	

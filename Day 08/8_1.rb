@@ -105,7 +105,7 @@ data_array << data_index[1]
 
 # This sort of does the right thing, but I think maybe I need to make it 'N' times do, where N is the number of children each thing has?
 	
-5.times do
+data_index[0].times do
 
 	unless data_index[index_count] == 0
 	
